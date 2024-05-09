@@ -105,7 +105,18 @@ def inserir():
   mydb.commit()
   print(values, "foi inserido com sucesso")
 
-
+def excluir():
+  e = True
+  while e:
+    try:
+      codigo = int(input("digite o código do produto: "))
+      delete_sql= "DELETE FROM produtos where cod = %s" 
+      cod = codigo 
+      mycursor.execute(delete_sql, (cod,))
+      mydb.commit()
+      e=False
+    except ValueError:
+      print("Digite somente números!")
 
 
 
