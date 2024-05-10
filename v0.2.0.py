@@ -64,6 +64,8 @@ def listar():
             outros_custos_P = round((cf + iv + cv) * 100)
             rent_V = round((receita_bruta_V) - (outros_custos_V))
             rent_P = (receita_bruta_P) - (outros_custos_P)
+            print()
+            print()
             print("Código:", linha[0])
             print("Nome:", linha[1])
             print("Descrição:", linha[2])
@@ -113,17 +115,24 @@ def inserir():
 
 
 def excluir():
-    e = True
-    while e:
-        try:
-            codigo = int(input("digite o código do produto: "))
-            delete_sql = "DELETE FROM produtos WHERE cod = %s"
-            cod = codigo
-            mycursor.execute(delete_sql, (cod,))
-            mydb.commit()
-            e = False
-        except ValueError:
-            print("Digite somente números!")
+    try:
+        cod = -1
+        while cod < 0:
+            cod = int(input("Digite o código do produto que deseja excluir: ")) 
+            consulta_sql = "SELECT * FROM produto WHERE cod = %s"
+            mycursor.execute(consulta_sql, (cod,))
+            produto = mycursor.fetchone()
+            if produto is None:
+                print("Produto não encontrado")
+                return
+            else:
+                query = "DELETE from produto WHERE cod = %s"
+                values = cod 
+                mycursor.execute(query, (values,))
+                mydb.commit()
+                print("Deletado com sucesso!")
+    except ValueError:
+        print("Digite somente números!")
 
 
 def alterar():
