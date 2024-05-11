@@ -1,10 +1,11 @@
 import mysql.connector
+from tabulate import tabulate
 
 mydb = mysql.connector.connect(
-    host="",
-    user="",
-    password="",
-    database=""
+    host="127.0.0.1",
+    user="root",
+    password="gabiru04",
+    database="pj"
 )
 
 mycursor = mydb.cursor()
@@ -66,18 +67,21 @@ def listar():
             rent_P = (receita_bruta_P) - (outros_custos_P)
             print()
             print()
-            print("Código:", linha[0])
-            print("Nome:", linha[1])
-            print("Descrição:", linha[2])
-            print("A. Preço de venda " + "R$", pv, pvP, "%")
-            print("B. Custo do produto" + "R$", cp, cpP, "%")
-            print("C. Receita Bruta (A-B)", "R$", receita_bruta_V, receita_bruta_P, "%")
-            print("D. Custo Fixo/Administrativo", "R$", cfV, cfP, "%")
-            print("E. Comissão de Vendas ", "R$", cvV, cvP, "%")
-            print("F. Impostos sobre venda", "R$", ivV, ivP, "%")
-            print("G. Outros custos(D+E+F)", "R$", outros_custos_V, outros_custos_P, "%")
-            print("H. Rentabilidade (C-G)", "R$", rent_V, rent_P, "%")
-            print()
+            dados = [
+        [linha[1], "Valor", " %",],
+        ["Código:", linha[0]],
+        ["Descrição:", linha[2]],
+        ["A. Preço de venda ", pv, pvP,"%"],
+        ["B. Custo do produto", cp, cpP,"%"],
+        ["C. Receita Bruta (A-B)", receita_bruta_V, receita_bruta_P,"%"],
+        ["D. Custo Fixo/Administrativo", cfV, cfP, "%"],
+        ["E. Comissão de Vendas ", cvV, cvP, "%"],
+        ["F. Impostos sobre venda", ivV, ivP, "%"],
+        ["G. Outros custos(D+E+F)", outros_custos_V, outros_custos_P, "%"],
+        ["H. Rentabilidade (C-G)", rent_V, rent_P, "%"],
+            ]
+            tabela = tabulate(dados, headers="firstrow", tablefmt="fancy_grid")
+            print (tabela)
             if rent_P > 20:
                 print("O lucro obtido é alto!")
             elif rent_P > 10:
