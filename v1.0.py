@@ -220,12 +220,13 @@ def alterar():
     except ValueError:
         print("Digite um número válido.")
 
-escolha = 69
-menu = ['Inserir produto',
-        'Alterar produto',
-        'Excluir produto',
-        'Listar produtos',
-        'Sair do Programa']
+dados = ''
+menu = ['Inserir produto',\
+      'Alterar produto',\
+      'Excluir produto',\
+      'Listar produtos',\
+      'Sair do Programa']
+tabela = tabulate(dados, headers= ['1.Inserir produto', '2.Excluir Produto', '3.Alterar produto', '4.Listar produtos', '5.Sair do programa'], tablefmt="grid")
 
 while escolha != 5:
     escolha = int(opcaoEscolhida(menu))
