@@ -71,14 +71,14 @@ def listar():
         [linha[1], "Valor", " %",],
         ["Código:", linha[0]],
         ["Descrição:", linha[2]],
-        ["A. Preço de venda ", pv, pvP,"%"],
-        ["B. Custo do produto", cp, cpP,"%"],
-        ["C. Receita Bruta (A-B)", receita_bruta_V, receita_bruta_P,"%"],
-        ["D. Custo Fixo/Administrativo", cfV, cfP, "%"],
-        ["E. Comissão de Vendas ", cvV, cvP, "%"],
-        ["F. Impostos sobre venda", ivV, ivP, "%"],
-        ["G. Outros custos(D+E+F)", outros_custos_V, outros_custos_P, "%"],
-        ["H. Rentabilidade (C-G)", rent_V, rent_P, "%"],
+        ["A. Preço de venda ", f"R${pv}", pvP],
+        ["B. Custo do produto", f"R${cp}", cpP],
+        ["C. Receita Bruta (A-B)", f"R${receita_bruta_V}", receita_bruta_P],
+        ["D. Custo Fixo/Administrativo", f"R${cfV}", cfP, "%"],
+        ["E. Comissão de Vendas ", f"R${cvV}", cvP,],
+        ["F. Impostos sobre venda", f"R${ivV}", ivP, "%"],
+        ["G. Outros custos(D+E+F)", f"R${outros_custos_V}", outros_custos_P],
+        ["H. Rentabilidade (C-G)", f"R${rent_V}", rent_P],
             ]
             tabela = tabulate(dados, headers="firstrow", tablefmt="fancy_grid")
             print (tabela)
@@ -107,15 +107,15 @@ def inserir():
             cv = int(input("Digite a comissão de vendas do produto em porcentagem:  "))
             iv = int(input("Digite o imposto sobre venda do produto em porcentagem :  "))
             ml = int(input("Digite a margem de lucro do produto em porcentagem :  "))
+            insert_sql = "INSERT INTO produto (cod, nome, descricao, cp, cf, cv, iv, ml) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"
+            values = (cod, nome, descricao, cp, cf, cv, iv, ml)
+            mycursor.execute(insert_sql, values)
+            mydb.commit()
+            print(values, "foi inserido com sucesso")
+            t = False
         except ValueError:
             print("Digite somente números!")
-        t = False
 
-    insert_sql = "INSERT INTO produto (cod, nome, descricao, cp, cf, cv, iv, ml) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"
-    values = (cod, nome, descricao, cp, cf, cv, iv, ml)
-    mycursor.execute(insert_sql, values)
-    mydb.commit()
-    print(values, "foi inserido com sucesso")
 
 
 def excluir():
@@ -130,11 +130,13 @@ def excluir():
                 print("Produto não encontrado")
                 return
             else:
-                query = "DELETE from produto WHERE cod = %s"
-                values = cod 
-                mycursor.execute(query, (values,))
-                mydb.commit()
-                print("Deletado com sucesso!")
+                resposta    =   umTexto('Deseja realmente excluir? ','Você deve digitar S ou N',['s','S','n','N'])
+                if resposta in ['s','S']:
+                    query = "DELETE from produto WHERE cod = %s"
+                    values = cod 
+                    mycursor.execute(query, (values,))
+                    mydb.commit()
+                    print("Deletado com sucesso!")
     except ValueError:
         print("Digite somente números!")
 
@@ -220,6 +222,7 @@ def alterar():
     except ValueError:
         print("Digite um número válido.")
 
+escolha = 69
 dados = ''
 menu = ['Inserir produto',\
       'Alterar produto',\
