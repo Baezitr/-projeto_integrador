@@ -30,7 +30,6 @@ def opcaoEscolhida(mnu):
     opcoesValidas = []
     posicao = 0
     while posicao < len(mnu):
-        print(posicao + 1, ') ', mnu[posicao], sep='')
         opcoesValidas.append(str(posicao + 1))
         posicao += 1
     return umTexto('Qual é a sua opção? ', 'Opção inválida', opcoesValidas)
