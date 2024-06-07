@@ -219,6 +219,7 @@ def alterar():
     except ValueError:
         print("Digite um número válido.")
 
+escolha = 69
 dados = ''
 menu = ['Inserir produto',\
       'Alterar produto',\
